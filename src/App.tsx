@@ -1,4 +1,5 @@
 import React from 'react';
+import EcosystemHealthChart from './components/EcosystemHealthChart';
 
 const App: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ const App: React.FC = () => {
       
       <main>
         <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-          <p>Chart container ready. Data pending...</p>
+          <EcosystemHealthChart />
         </div>
       </main>
     </div>
