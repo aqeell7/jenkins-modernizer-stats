@@ -1,61 +1,69 @@
-// scripts/fetch-data.js
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const DATA_DIR = path.join(__dirname, '../src/data');
+// This is where GitHub Actions will clone the massive Jenkins data repository
+const EXTERNAL_REPO_DIR = path.join(__dirname, '../../metadata-plugin-modernizer');
 
-// The GitHub Tree API lets us see the entire folder structure in one request
-const TREE_API_URL = 'https://api.github.com/repos/jenkins-infra/metadata-plugin-modernizer/git/trees/main?recursive=1';
+const mockData = [
+  {
+    pluginName: "mock-plugin-local-dev",
+    migrations: [
+      { migrationName: "Setup Jenkinsfile", migrationStatus: "success" },
+      { migrationName: "Migrate To JUnit5", migrationStatus: "fail" }
+    ]
+  }
+];
 
-async function fetchJenkinsData() {
-  console.log('🌳 Scanning Jenkins repository tree...');
+// Recursively scans directories to find all aggregated_migrations.json files
+function findMigrationFiles(dir, fileList = []) {
+  if (!fs.existsSync(dir)) return fileList;
   
-  if (!fs.existsSync(DATA_DIR)){
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+  const files = fs.readdirSync(dir);
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    if (fs.statSync(filePath).isDirectory()) {
+      findMigrationFiles(filePath, fileList);
+    } else if (filePath.endsWith('reports/aggregated_migrations.json')) {
+      fileList.push(filePath);
+    }
+  }
+  return fileList;
+}
+
+async function compileLocalData() {
+  console.log('🚀 Starting Zero-API Data Aggregation...');
+
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+  // Fallback for local development if the massive repo isn't cloned on your machine
+  if (!fs.existsSync(EXTERNAL_REPO_DIR)) {
+    console.warn(`⚠️ External repo not found at ${EXTERNAL_REPO_DIR}.`);
+    console.log('🔄 Using local mock data. (Real data will build on GitHub Actions).');
+    fs.writeFileSync(path.join(DATA_DIR, 'aggregated_migrations.json'), JSON.stringify(mockData, null, 2));
+    return;
   }
 
   try {
-    const treeResponse = await fetch(TREE_API_URL);
-    if (!treeResponse.ok) throw new Error(`Tree fetch failed: ${treeResponse.status}`);
-    
-    const treeData = await treeResponse.json();
-    
-    // Filter out everything except the specific report files
-    const reportFiles = treeData.tree.filter(file => 
-      file.path.endsWith('reports/aggregated_migrations.json')
-    );
+    const reportPaths = findMigrationFiles(EXTERNAL_REPO_DIR);
+    console.log(`Found ${reportPaths.length} plugin reports locally. Compiling...`);
 
-    console.log(`Found ${reportFiles.length} plugin reports. Fetching a sample of 10 to respect API limits...`);
-    
-    // Limit to 10 for the prototype
-    const sampleFiles = reportFiles.slice(0, 10);
-    const masterDataset = [];
+    const masterDataset = reportPaths.map(filePath => {
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(fileContent);
+    });
 
-    // Fetch the raw JSON for each of our sampled plugins
-    for (const file of sampleFiles) {
-      const rawUrl = `https://raw.githubusercontent.com/jenkins-infra/metadata-plugin-modernizer/main/${file.path}`;
-      const res = await fetch(rawUrl);
-      if (res.ok) {
-        const pluginData = await res.json();
-        masterDataset.push(pluginData);
-      }
-    }
+    fs.writeFileSync(path.join(DATA_DIR, 'aggregated_migrations.json'), JSON.stringify(masterDataset, null, 2));
+    console.log(`✅ Master dataset successfully compiled in milliseconds.`);
 
-    // Save our combined master file!
-    fs.writeFileSync(
-      path.join(DATA_DIR, 'aggregated_migrations.json'), 
-      JSON.stringify(masterDataset, null, 2)
-    );
-    
-    console.log(`✅ Successfully compiled master dataset from ${masterDataset.length} plugins.`);
-    
   } catch (error) {
-    console.error('Critical failure in data fetcher:', error);
+    console.error('Critical failure in data compilation:', error);
     process.exit(1);
   }
 }
 
-fetchJenkinsData();
+compileLocalData();
