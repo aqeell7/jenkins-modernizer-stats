@@ -44,51 +44,51 @@ const RecipeAnalytics: React.FC = () => {
   return (
     <div className="animate-in fade-in duration-500 space-y-6">
       <div>
-        <h2 className="text-3xl font-bold text-slate-50">Recipe Analytics</h2>
-        <p className="text-slate-400 mt-1">Deep-dive telemetry on OpenRewrite recipe failure rates.</p>
+        <h2 className="text-3xl font-heading font-bold text-[#C9D1D9]">Recipe Analytics</h2>
+        <p className="text-[#8B949E] font-sans mt-1">Deep-dive telemetry on OpenRewrite recipe failure rates.</p>
       </div>
 
-      <div className="bg-[#0a0f1c] border border-slate-800 rounded-lg overflow-hidden">
-        <div className="border-b border-slate-800 bg-slate-900/50 p-4 flex items-center justify-between">
-          <div className="flex items-center text-red-400 font-mono text-sm">
+      <div className="bg-[#161B22] border border-[#30363D] text-[#C9D1D9] rounded-md overflow-hidden">
+        <div className="border-b border-[#30363D] bg-[#0D1117] p-4 flex items-center justify-between">
+          <div className="flex items-center text-[#D33833] font-jetbrains-mono font-bold text-sm">
             <AlertTriangle className="w-4 h-4 mr-2" />
             TOP_FAILING_RECIPES
           </div>
-          <div className="text-slate-500 font-mono text-xs">
+          <div className="text-[#8B949E] font-jetbrains-mono text-xs">
             Showing {recipeStats.length} recipes requiring intervention
           </div>
         </div>
 
         <div className="p-0">
           {recipeStats.length > 0 ? (
-            <div className="divide-y divide-slate-800/50">
+            <div className="divide-y divide-[#30363D]">
               {recipeStats.map((recipe, index) => {
                 const failPercent = (recipe.fail / recipe.total) * 100;
                 const successPercent = (recipe.success / recipe.total) * 100;
                 
                 return (
-                  <div key={recipe.name} className="p-6 hover:bg-slate-800/20 transition-colors">
+                  <div key={recipe.name} className="p-6 hover:bg-[#30363D]/20 transition-colors">
                     <div className="flex justify-between items-end mb-3">
                       <div className="flex items-center space-x-3">
-                        <span className="text-slate-600 font-mono text-xs">{String(index + 1).padStart(2, '0')}</span>
-                        <h3 className="text-slate-200 font-medium">{recipe.name}</h3>
+                        <span className="text-[#8B949E] font-jetbrains-mono text-xs">{String(index + 1).padStart(2, '0')}</span>
+                        <h3 className="text-[#C9D1D9] font-medium font-jetbrains-mono">{recipe.name}</h3>
                       </div>
-                      <div className="text-right font-mono text-xs flex space-x-4">
-                        <span className="text-red-400">{recipe.fail} Failed</span>
-                        <span className="text-green-400">{recipe.success} Success</span>
-                        <span className="text-slate-500">{recipe.total} Total</span>
+                      <div className="text-right font-jetbrains-mono text-xs flex space-x-4">
+                        <span className="text-[#D33833]">{recipe.fail} Failed</span>
+                        <span className="text-[#238636]">{recipe.success} Success</span>
+                        <span className="text-[#8B949E]">{recipe.total} Total</span>
                       </div>
                     </div>
 
                     {/* Telemetry Progress Bar */}
-                    <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                    <div className="w-full h-2 bg-[#30363D] rounded-full overflow-hidden flex">
                       <div 
-                        className="h-full bg-red-500" 
+                        className="h-full bg-[#D33833]" 
                         style={{ width: `${failPercent}%` }}
                         title={`${failPercent.toFixed(1)}% Failure Rate`}
                       />
                       <div 
-                        className="h-full bg-green-500" 
+                        className="h-full bg-[#238636]" 
                         style={{ width: `${successPercent}%` }}
                         title={`${successPercent.toFixed(1)}% Success Rate`}
                       />
@@ -98,9 +98,9 @@ const RecipeAnalytics: React.FC = () => {
               })}
             </div>
           ) : (
-            <div className="p-12 text-center flex flex-col items-center text-slate-500">
-              <CheckCircle2 className="w-12 h-12 mb-4 text-green-500/20" />
-              <p className="font-mono text-sm">System optimal. Zero failing recipes detected.</p>
+            <div className="p-12 text-center flex flex-col items-center text-[#8B949E]">
+              <CheckCircle2 className="w-12 h-12 mb-4 text-[#238636]/40" />
+              <p className="font-jetbrains-mono text-sm">System optimal. Zero failing recipes detected.</p>
             </div>
           )}
         </div>

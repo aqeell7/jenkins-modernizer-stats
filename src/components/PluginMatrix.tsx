@@ -51,38 +51,38 @@ const PluginMatrix: React.FC = () => {
   return (
     <div className="space-y-4 relative">
       <div>
-        <h2 className="text-2xl font-bold text-slate-50">Plugin Matrix</h2>
-        <p className="text-slate-400">Search and filter the complete modernization dataset.</p>
+        <h2 className="text-2xl font-heading font-bold text-[#C9D1D9]">Plugin Matrix</h2>
+        <p className="text-[#8B949E] font-sans">Search and filter the complete modernization dataset.</p>
       </div>
 
       {/* Helper text for discoverability */}
-      <p className="text-xs text-blue-400 font-mono flex items-center bg-blue-500/10 border border-blue-500/20 p-2 rounded-md max-w-md">
-        <Info className="w-3 h-3 mr-2 flex-shrink-0" /> 
+      <p className="text-xs text-[#C9D1D9] font-jetbrains-mono flex items-center bg-[#30363D]/30 border border-[#30363D] p-2 rounded-md max-w-md">
+        <Info className="w-3 h-3 mr-2 text-[#8B949E] flex-shrink-0" /> 
         Click on any plugin row to open the granular diagnostics panel.
       </p>
 
       {/* Functional Search Bar */}
       <div className="max-w-md relative mt-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8B949E]" />
         <Input 
           placeholder="Search by plugin name..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-9 bg-slate-900 border-slate-800 text-slate-50 focus-visible:ring-slate-700"
+          className="pl-9 bg-[#0D1117] border-[#30363D] text-[#C9D1D9] focus-visible:ring-[#8B949E] font-sans"
         />
       </div>
 
       {/* The Data Table */}
-      <div className="rounded-md border border-slate-800 bg-slate-900 overflow-hidden">
+      <div className="rounded-md border border-[#30363D] bg-[#161B22] overflow-hidden">
         <Table>
-          <TableHeader className="bg-slate-950">
-            <TableRow className="border-slate-800 hover:bg-transparent">
-              <TableHead className="text-slate-400">Plugin Name</TableHead>
-              <TableHead className="text-slate-400">Total Migrations</TableHead>
-              <TableHead className="text-slate-400">Successful</TableHead>
-              <TableHead className="text-slate-400">Failed</TableHead>
-              <TableHead className="text-slate-400">System Status</TableHead>
-              <TableHead className="text-slate-400 text-right">Details</TableHead>
+          <TableHeader className="bg-[#0D1117]">
+            <TableRow className="border-[#30363D] hover:bg-transparent">
+              <TableHead className="text-[#8B949E] font-jetbrains-mono">Plugin Name</TableHead>
+              <TableHead className="text-[#8B949E] font-jetbrains-mono">Total Migrations</TableHead>
+              <TableHead className="text-[#8B949E] font-jetbrains-mono">Successful</TableHead>
+              <TableHead className="text-[#8B949E] font-jetbrains-mono">Failed</TableHead>
+              <TableHead className="text-[#8B949E] font-jetbrains-mono">System Status</TableHead>
+              <TableHead className="text-[#8B949E] font-jetbrains-mono text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -93,32 +93,31 @@ const PluginMatrix: React.FC = () => {
                 return (
                   <TableRow 
                     key={pluginData.name} 
-                    className="border-slate-800 cursor-pointer hover:bg-slate-800/50 transition-colors group"
+                    className="border-[#30363D] cursor-pointer hover:bg-[#30363D]/30 transition-colors group"
                     onClick={() => setSelectedPlugin(rawPlugin)}
                   >
-                    <TableCell className="font-medium text-slate-200">{pluginData.name}</TableCell>
-                    <TableCell className="text-slate-300">{pluginData.totalMigrations}</TableCell>
-                    <TableCell className="text-green-500">{pluginData.success}</TableCell>
-                    <TableCell className="text-red-500">{pluginData.fail}</TableCell>
+                    <TableCell className="font-medium font-jetbrains-mono text-[#C9D1D9]">{pluginData.name}</TableCell>
+                    <TableCell className="text-[#C9D1D9] font-sans">{pluginData.totalMigrations}</TableCell>
+                    <TableCell className="text-[#238636] font-sans">{pluginData.success}</TableCell>
+                    <TableCell className="text-[#D33833] font-sans">{pluginData.fail}</TableCell>
                     <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs font-mono ${
-                        pluginData.status === 'Healthy' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
-                        pluginData.status === 'Requires Attention' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 
-                        'bg-slate-500/10 text-slate-400 border border-slate-500/20'
+                      <span className={`px-2 py-1 rounded-full text-xs font-jetbrains-mono ${
+                        pluginData.status === 'Healthy' ? 'bg-[#238636]/10 text-[#238636] border border-[#238636]/30' : 
+                        pluginData.status === 'Requires Attention' ? 'bg-[#D33833]/10 text-[#D33833] border border-[#D33833]/30' : 
+                        'bg-[#8B949E]/10 text-[#8B949E] border border-[#8B949E]/30'
                       }`}>
                         {pluginData.status}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
-                      {/* Chevron icon becomes brighter when the user hovers over the row */}
-                      <ChevronRight className="w-5 h-5 inline-block text-slate-600 group-hover:text-slate-300 transition-colors" />
+                      <ChevronRight className="w-5 h-5 inline-block text-[#8B949E] group-hover:text-[#C9D1D9] transition-colors" />
                     </TableCell>
                   </TableRow>
                 );
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-slate-500">
+                <TableCell colSpan={6} className="text-center py-8 text-[#8B949E] font-sans">
                   No plugins found matching "{searchTerm}"
                 </TableCell>
               </TableRow>
@@ -126,7 +125,7 @@ const PluginMatrix: React.FC = () => {
           </TableBody>
         </Table>
       </div>
-      <div className="text-sm text-slate-500 font-mono">
+      <div className="text-sm text-[#8B949E] font-jetbrains-mono">
         Showing {filteredPlugins.length} of {processedData.length} plugins
       </div>
 
