@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import EcosystemHealth from "./components/EcosystemHealth";
 import PluginMatrix from "./components/PluginMatrix";
+import RecipeAnalytics from "./components/RecipeAnalytics";
 
 import { 
   Sidebar, 
@@ -16,10 +17,8 @@ import {
 import { LayoutDashboard, Database, FileText, Settings2 } from "lucide-react";
 
 const App: React.FC = () => {
-  // Simple state-based routing
   const [activeView, setActiveView] = useState<"health" | "recipes" | "matrix" | "architecture">("health");
 
-  // A render function to switch main content
   const renderContent = () => {
     switch (activeView) {
       case "health":
@@ -31,11 +30,7 @@ const App: React.FC = () => {
           </div>
         );
       case "recipes":
-        return (
-          <div className="animate-in fade-in duration-500 p-8 flex items-center justify-center h-full border-2 border-dashed border-slate-800 rounded-lg">
-            <p className="text-slate-500 font-mono">{">"} compiling recipe analytics module...</p>
-          </div>
-        );
+        return <RecipeAnalytics />;
       case "architecture":
         return (
           <div className="animate-in fade-in duration-500 p-8 flex items-center justify-center h-full border-2 border-dashed border-slate-800 rounded-lg">
