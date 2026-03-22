@@ -5,6 +5,7 @@ import PluginMatrix from "./PluginMatrix";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity } from "lucide-react";
+import TopFailingRecipesWidget from "./TopFailingRecipesWidget";
 
 interface Migration {
   migrationStatus: string;
@@ -113,7 +114,9 @@ const EcosystemHealth: React.FC = () => {
         </Card>
         
         <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-2 flex items-center justify-center min-h-[250px]">
-          <p className="text-slate-500 font-mono text-sm">{">"} recipe_analytics_visualization_mounting...</p>
+          <p className="text-slate-500 font-mono text-sm">{">"} <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-2 flex items-center justify-center min-h-[250px] p-0">
+          <TopFailingRecipesWidget />
+        </Card></p>
         </Card>
       </div>
 

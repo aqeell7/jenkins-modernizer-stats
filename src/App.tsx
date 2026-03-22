@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EcosystemHealth from "./components/EcosystemHealth";
 import PluginMatrix from "./components/PluginMatrix";
 import RecipeAnalytics from "./components/RecipeAnalytics";
+import ArchitecturePipeline from "./components/ArchitecturePipeline";
 
 import { 
   Sidebar, 
@@ -32,11 +33,7 @@ const App: React.FC = () => {
       case "recipes":
         return <RecipeAnalytics />;
       case "architecture":
-        return (
-          <div className="animate-in fade-in duration-500 p-8 flex items-center justify-center h-full border-2 border-dashed border-slate-800 rounded-lg">
-            <p className="text-slate-500 font-mono">{">"} fetching architecture documentation...</p>
-          </div>
-        );
+        return <ArchitecturePipeline />;
       default:
         return <EcosystemHealth />;
     }
