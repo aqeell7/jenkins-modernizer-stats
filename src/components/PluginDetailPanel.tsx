@@ -35,28 +35,28 @@ const PluginDetailPanel: React.FC<PluginDetailPanelProps> = ({ plugin, isOpen, o
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-xl bg-[#0a0f1c] border-l border-slate-800 text-slate-50 p-0 flex flex-col">
+      <SheetContent className="w-full sm:max-w-xl bg-[#0D1117] border-l border-[#30363D] text-[#C9D1D9] p-0 flex flex-col">
         
         {/* Header Section */}
-        <div className="p-6 border-b border-slate-800 bg-slate-950">
+        <div className="p-6 border-b border-[#30363D] bg-[#161B22]">
           <SheetHeader className="text-left mb-4">
-            <SheetTitle className="text-2xl font-bold text-slate-50 flex items-center">
+            <SheetTitle className="text-2xl font-heading font-bold text-[#C9D1D9] flex items-center">
               {plugin.pluginName}
             </SheetTitle>
-            <SheetDescription className="text-slate-400 font-mono text-xs">
+            <SheetDescription className="text-[#8B949E] font-sans text-xs">
               System health and migration history diagnostics.
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex space-x-2 font-mono text-xs">
-            <Badge variant="outline" className="border-slate-700 text-slate-300">
+          <div className="flex space-x-2 font-jetbrains-mono text-xs">
+            <Badge variant="outline" className="border-[#30363D] text-[#C9D1D9] bg-[#30363D]/20">
               {migrations.length} Total Run
             </Badge>
-            <Badge variant="outline" className="border-green-500/30 text-green-400 bg-green-500/10">
+            <Badge variant="outline" className="border-[#238636]/30 text-[#238636] bg-[#238636]/10">
               {successCount} Success
             </Badge>
             {failCount > 0 && (
-              <Badge variant="outline" className="border-red-500/30 text-red-400 bg-red-500/10">
+              <Badge variant="outline" className="border-[#D33833]/30 text-[#D33833] bg-[#D33833]/10">
                 {failCount} Failed
               </Badge>
             )}
@@ -68,17 +68,17 @@ const PluginDetailPanel: React.FC<PluginDetailPanelProps> = ({ plugin, isOpen, o
           
           {/* Diagnostics / Next Steps */}
           {failCount > 0 && (
-            <div className="mb-8 bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-              <h4 className="flex items-center text-red-400 font-mono text-xs mb-3 font-bold">
+            <div className="mb-8 bg-[#D33833]/10 border border-[#D33833]/20 rounded-lg p-4">
+              <h4 className="flex items-center text-[#D33833] font-jetbrains-mono text-xs mb-3 font-bold">
                 <AlertCircle className="w-4 h-4 mr-2" />
                 SYSTEM_DIAGNOSTICS_REQUIRED
               </h4>
-              <ul className="space-y-2 text-sm text-slate-300">
+              <ul className="space-y-2 text-sm text-[#C9D1D9] font-jetbrains-mono">
                 {migrations
                   .filter(m => m.migrationStatus?.toLowerCase() === "fail")
                   .map((m, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="text-red-500 mr-2 mt-0.5">{"->"}</span>
+                      <span className="text-[#D33833] mr-2 mt-0.5">{"->"}</span>
                       <span>Review failure logs for: <strong>{m.migrationName}</strong></span>
                     </li>
                   ))}
@@ -88,24 +88,24 @@ const PluginDetailPanel: React.FC<PluginDetailPanelProps> = ({ plugin, isOpen, o
 
           {/* Migration Timeline */}
           <div>
-            <h4 className="text-slate-500 font-mono text-xs mb-4">EXECUTION_LOG</h4>
-            <div className="space-y-4 border-l border-slate-800 ml-2 pl-4">
+            <h4 className="text-[#8B949E] font-jetbrains-mono text-xs mb-4 font-bold">EXECUTION_LOG</h4>
+            <div className="space-y-4 border-l border-[#30363D] ml-2 pl-4">
               {migrations.map((m, idx) => {
                 const isSuccess = m.migrationStatus?.toLowerCase() === "success";
                 const isFail = m.migrationStatus?.toLowerCase() === "fail";
                 
                 return (
                   <div key={idx} className="relative">
-                    <div className={`absolute -left-[21px] bg-[#0a0f1c] rounded-full p-0.5 
-                      ${isSuccess ? 'text-green-500' : isFail ? 'text-red-500' : 'text-yellow-500'}`}
+                    <div className={`absolute -left-[21px] bg-[#0D1117] rounded-full p-0.5 
+                      ${isSuccess ? 'text-[#238636]' : isFail ? 'text-[#D33833]' : 'text-[#D29922]'}`}
                     >
                       {isSuccess ? <CheckCircle2 className="w-4 h-4" /> : isFail ? <XCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
                     </div>
-                    <div className="bg-slate-900/50 border border-slate-800 rounded-md p-3">
+                    <div className="bg-[#161B22] border border-[#30363D] rounded-md p-3">
                       <div className="flex justify-between items-start">
-                        <h5 className="text-slate-200 text-sm font-medium">{m.migrationName || "Unknown Recipe"}</h5>
-                        <Badge variant="outline" className={`font-mono text-[10px] uppercase
-                          ${isSuccess ? 'border-green-500/30 text-green-400' : isFail ? 'border-red-500/30 text-red-400' : 'border-yellow-500/30 text-yellow-400'}`}
+                        <h5 className="text-[#C9D1D9] text-sm font-jetbrains-mono leading-tight">{m.migrationName || "Unknown Recipe"}</h5>
+                        <Badge variant="outline" className={`font-jetbrains-mono text-[10px] uppercase ml-2
+                          ${isSuccess ? 'border-[#238636]/30 text-[#238636]' : isFail ? 'border-[#D33833]/30 text-[#D33833]' : 'border-[#D29922]/30 text-[#D29922]'}`}
                         >
                           {m.migrationStatus || "SKIPPED"}
                         </Badge>
@@ -115,7 +115,7 @@ const PluginDetailPanel: React.FC<PluginDetailPanelProps> = ({ plugin, isOpen, o
                 );
               })}
               {migrations.length === 0 && (
-                <div className="text-slate-500 text-sm">No migration data recorded for this plugin.</div>
+                <div className="text-[#8B949E] text-sm font-jetbrains-mono">No migration data recorded for this plugin.</div>
               )}
             </div>
           </div>
