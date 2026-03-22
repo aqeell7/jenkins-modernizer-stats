@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import rawData from "../data/aggregated_migrations.json";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, ChevronRight, Info } from "lucide-react";
 import PluginDetailPanel from "./PluginDetailPanel";
 
 interface Migration {
@@ -18,13 +18,9 @@ interface PluginReport {
 const PluginMatrix: React.FC = () => {
   const allPlugins = rawData as unknown as PluginReport[];
   
-  // State for the search bar
   const [searchTerm, setSearchTerm] = useState("");
-  
-  // State to track which plugin the user clicked on for the slide-out panel
   const [selectedPlugin, setSelectedPlugin] = useState<PluginReport | null>(null);
 
-  // Process the raw nested data into a flat, sortable structure for the table
   const processedData = useMemo(() => {
     return allPlugins.map(plugin => {
       let success = 0;
@@ -46,7 +42,6 @@ const PluginMatrix: React.FC = () => {
     });
   }, [allPlugins]);
 
-  // Apply the functional search filter
   const filteredPlugins = useMemo(() => {
     return processedData.filter(plugin => 
       plugin.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -60,8 +55,14 @@ const PluginMatrix: React.FC = () => {
         <p className="text-slate-400">Search and filter the complete modernization dataset.</p>
       </div>
 
-      {/* Functional Search Bar with Icon */}
-      <div className="max-w-md relative">
+      {/* Helper text for discoverability */}
+      <p className="text-xs text-blue-400 font-mono flex items-center bg-blue-500/10 border border-blue-500/20 p-2 rounded-md max-w-md">
+        <Info className="w-3 h-3 mr-2 flex-shrink-0" /> 
+        Click on any plugin row to open the granular diagnostics panel.
+      </p>
+
+      {/* Functional Search Bar */}
+      <div className="max-w-md relative mt-4">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
         <Input 
           placeholder="Search by plugin name..." 
@@ -81,19 +82,19 @@ const PluginMatrix: React.FC = () => {
               <TableHead className="text-slate-400">Successful</TableHead>
               <TableHead className="text-slate-400">Failed</TableHead>
               <TableHead className="text-slate-400">System Status</TableHead>
+              <TableHead className="text-slate-400 text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredPlugins.length > 0 ? (
               filteredPlugins.map((pluginData) => {
-                // Find the original raw plugin data to pass to the detail panel
                 const rawPlugin = allPlugins.find(p => p.pluginName === pluginData.name) || null;
                 
                 return (
                   <TableRow 
                     key={pluginData.name} 
-                    className="border-slate-800 cursor-pointer hover:bg-slate-800/50 transition-colors"
-                    onClick={() => setSelectedPlugin(rawPlugin)} // Triggers the slide-out panel
+                    className="border-slate-800 cursor-pointer hover:bg-slate-800/50 transition-colors group"
+                    onClick={() => setSelectedPlugin(rawPlugin)}
                   >
                     <TableCell className="font-medium text-slate-200">{pluginData.name}</TableCell>
                     <TableCell className="text-slate-300">{pluginData.totalMigrations}</TableCell>
@@ -108,12 +109,16 @@ const PluginMatrix: React.FC = () => {
                         {pluginData.status}
                       </span>
                     </TableCell>
+                    <TableCell className="text-right">
+                      {/* Chevron icon becomes brighter when the user hovers over the row */}
+                      <ChevronRight className="w-5 h-5 inline-block text-slate-600 group-hover:text-slate-300 transition-colors" />
+                    </TableCell>
                   </TableRow>
                 );
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-slate-500">
+                <TableCell colSpan={6} className="text-center py-8 text-slate-500">
                   No plugins found matching "{searchTerm}"
                 </TableCell>
               </TableRow>
@@ -125,7 +130,6 @@ const PluginMatrix: React.FC = () => {
         Showing {filteredPlugins.length} of {processedData.length} plugins
       </div>
 
-      {/* Slide-out Diagnostic Panel */}
       <PluginDetailPanel 
         plugin={selectedPlugin} 
         isOpen={selectedPlugin !== null} 

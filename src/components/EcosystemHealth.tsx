@@ -1,11 +1,10 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
 import rawData from "../data/aggregated_migrations.json";
-import PluginMatrix from "./PluginMatrix";
+import TopFailingRecipesWidget from "./TopFailingRecipesWidget";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity } from "lucide-react";
-import TopFailingRecipesWidget from "./TopFailingRecipesWidget";
 
 interface Migration {
   migrationStatus: string;
@@ -38,19 +37,33 @@ const EcosystemHealth: React.FC = () => {
     return { totalPlugins: pluginReports.length, totalMigrations, success, fail, successRate };
   }, [pluginReports]);
 
+  // Updated ECharts config to permanently show labels and percentages
   const chartOption = useMemo(() => ({
     tooltip: { trigger: "item" },
     series: [
       {
         type: "pie",
-        radius: ["50%", "80%"],
-        avoidLabelOverlap: false,
+        radius: ["40%", "70%"],
+        avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 4,
           borderColor: '#020617', 
           borderWidth: 2
         },
-        label: { show: false },
+        label: { 
+          show: true,
+          position: 'outside',
+          formatter: '{b}\n{d}%',
+          color: '#94a3b8',
+          fontFamily: 'monospace',
+          fontSize: 11
+        },
+        labelLine: {
+          show: true,
+          length: 15,
+          length2: 15,
+          lineStyle: { color: '#334155' }
+        },
         data: [
           { value: stats.success, name: "SUCCESS", itemStyle: { color: "#22c55e" } },
           { value: stats.fail, name: "FAILED", itemStyle: { color: "#ef4444" } },
@@ -73,7 +86,7 @@ const EcosystemHealth: React.FC = () => {
         </Badge>
       </div>
 
-      {/* NEW: Telemetry HUD (Replaces the generic SaaS cards) */}
+      {/* Telemetry HUD */}
       <div className="bg-[#0a0f1c] border border-slate-800 rounded-lg p-6 mb-8 flex flex-wrap gap-8 items-center shadow-inner font-mono">
         <div className="flex flex-col">
           <span className="text-slate-500 text-xs tracking-wider mb-1">TOTAL_PLUGINS</span>
@@ -102,27 +115,20 @@ const EcosystemHealth: React.FC = () => {
         </div>
       </div>
 
-      {/* Chart Section */}
+      {/* Chart Section - Heights increased to fill out the page */}
       <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-1">
+        <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-1 min-h-[350px]">
           <CardHeader>
             <CardTitle className="text-slate-200 font-mono text-sm">STATE_DISTRIBUTION</CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center">
-            <ReactECharts option={chartOption} style={{ height: "250px", width: "100%" }} />
+          <CardContent className="flex justify-center items-center h-[280px]">
+            <ReactECharts option={chartOption} style={{ height: "100%", width: "100%" }} />
           </CardContent>
         </Card>
         
-        <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-2 flex items-center justify-center min-h-[250px]">
-          <p className="text-slate-500 font-mono text-sm">{">"} <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-2 flex items-center justify-center min-h-[250px] p-0">
+        <Card className="bg-[#0a0f1c] border-slate-800 md:col-span-2 flex items-center justify-center min-h-[350px] p-0">
           <TopFailingRecipesWidget />
-        </Card></p>
         </Card>
-      </div>
-
-      {/* Plugin Matrix Integration */}
-      <div className="mt-8">
-        <PluginMatrix />
       </div>
     </div>
   );
