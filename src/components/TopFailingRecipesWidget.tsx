@@ -37,12 +37,12 @@ const TopFailingRecipesWidget: React.FC = () => {
   }, [allPlugins]);
 
   if (topFailing.length === 0) {
-    return <div className="text-slate-500 font-mono text-sm p-4">System optimal. Zero failing recipes.</div>;
+    return <div className="text-[#8B949E] font-jetbrains-mono text-sm p-4">System optimal. Zero failing recipes.</div>;
   }
 
   return (
     <div className="w-full flex flex-col justify-center h-full px-4 py-2">
-      <div className="flex items-center text-red-400 font-mono text-xs mb-4">
+      <div className="flex items-center text-[#D33833] font-jetbrains-mono font-bold text-xs mb-4">
         <AlertOctagon className="w-3 h-3 mr-2" />
         CRITICAL_RECIPE_FAILURES
       </div>
@@ -52,16 +52,16 @@ const TopFailingRecipesWidget: React.FC = () => {
           return (
             <div key={recipe.name} className="w-full">
               <div className="flex justify-between items-end mb-1">
-                <span className="text-slate-300 font-mono text-xs truncate pr-4" title={recipe.name}>
+                <span className="text-[#C9D1D9] font-jetbrains-mono text-xs truncate pr-4" title={recipe.name}>
                   {index + 1}. {recipe.name}
                 </span>
-                <span className="text-red-400 font-mono text-xs whitespace-nowrap">
+                <span className="text-[#D33833] font-jetbrains-mono text-xs whitespace-nowrap">
                   {recipe.fail} / {recipe.total}
                 </span>
               </div>
-              <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-[#30363D] rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-red-500" 
+                  className="h-full bg-[#D33833]" 
                   style={{ width: `${failPercent}%` }}
                 />
               </div>
