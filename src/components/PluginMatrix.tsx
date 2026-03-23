@@ -21,7 +21,6 @@ const PluginMatrix: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlugin, setSelectedPlugin] = useState<PluginReport | null>(null);
   
-  // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState<number | "All">(15);
 
@@ -52,7 +51,6 @@ const PluginMatrix: React.FC = () => {
     );
   }, [processedData, searchTerm]);
 
-  
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, itemsPerPage]);
@@ -65,7 +63,6 @@ const PluginMatrix: React.FC = () => {
     return filteredPlugins.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredPlugins, currentPage, itemsPerPage]);
 
-  // Generate an array of page numbers to show (max 5 buttons)
   const visiblePages = useMemo(() => {
     if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1);
     if (currentPage <= 3) return [1, 2, 3, 4, 5];
@@ -73,7 +70,6 @@ const PluginMatrix: React.FC = () => {
     return [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
   }, [currentPage, totalPages]);
 
-  // --- EXPORT FUNCTIONALITY ---
   const handleExportCSV = () => {
     const headers = ["Plugin Name", "Total Migrations", "Successful", "Failed", "System Status"];
     const csvContent = [
@@ -102,57 +98,60 @@ const PluginMatrix: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 relative pb-8">
+    <div className="space-y-8 relative pb-16">
+      {/* Header Section */}
       <div>
-        <h2 className="text-2xl font-sans font-bold text-[#C9D1D9]">Plugin Matrix</h2>
-        <p className="text-[#8B949E] font-sans mt-1">Search, filter, and export the complete modernization dataset.</p>
+        <h2 className="text-3xl font-heading font-bold text-[#C9D1D9]">Plugin Matrix</h2>
+        <p className="text-[#8B949E] font-sans mt-2 text-base">Search, filter, and export the complete modernization dataset.</p>
       </div>
 
-      <p className="text-sm text-[#C9D1D9] font-sans flex items-center bg-[#30363D]/30 border border-[#30363D] p-3 rounded-md max-w-2xl">
-        <Info className="w-4 h-4 mr-3 text-[#8B949E] flex-shrink-0" /> 
-        Click on any plugin row below to view its chronological migration execution log and system diagnostics.
-      </p>
+      {/* Info Banner with increased padding and text size */}
+      <div className="flex items-start bg-[#30363D]/20 border border-[#30363D] p-5 rounded-lg max-w-3xl">
+        <Info className="w-5 h-5 mr-3 mt-0.5 text-[#8B949E] flex-shrink-0" /> 
+        <p className="text-base text-[#C9D1D9] font-sans leading-relaxed">
+          Click on any plugin row below to view its chronological migration execution log and system diagnostics.
+        </p>
+      </div>
 
       {/* Action Bar: Search & Export */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="w-full max-w-md relative">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="w-full max-w-lg relative">
           <Input 
             placeholder="Search by plugin name..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pr-10 bg-[#0D1117] border-[#30363D] text-[#C9D1D9] focus-visible:ring-[#8B949E] font-sans h-10"
+            className="pr-12 pl-4 py-6 bg-[#0D1117] border-[#30363D] text-[#C9D1D9] focus-visible:ring-[#8B949E] font-sans text-base rounded-md"
           />
-          {/* Moved Search Icon to the right */}
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8B949E] pointer-events-none" />
+          <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#8B949E] pointer-events-none" />
         </div>
         
-        <div className="flex space-x-3 w-full sm:w-auto">
+        <div className="flex space-x-4 w-full md:w-auto">
           <button 
             onClick={handleExportCSV}
-            className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-sm font-sans transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center px-6 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
           >
-            <Download className="w-4 h-4 mr-2 text-[#8B949E]" /> CSV
+            <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> CSV
           </button>
           <button 
             onClick={handleExportJSON}
-            className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-sm font-sans transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center px-6 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
           >
-            <Download className="w-4 h-4 mr-2 text-[#8B949E]" /> JSON
+            <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> JSON
           </button>
         </div>
       </div>
 
       {/* The Data Table */}
-      <div className="rounded-md border border-[#30363D] bg-[#161B22] overflow-hidden shadow-sm">
+      <div className="rounded-lg border border-[#30363D] bg-[#161B22] overflow-hidden shadow-sm">
         <Table>
           <TableHeader className="bg-[#0D1117]">
             <TableRow className="border-[#30363D] hover:bg-transparent">
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4">Plugin Name</TableHead>
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4">Total Migrations</TableHead>
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4">Successful</TableHead>
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4">Failed</TableHead>
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4">System Status</TableHead>
-              <TableHead className="text-[#8B949E] font-sans font-semibold py-4 text-right">Details</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider">Plugin Name</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider">Total Migrations</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider">Successful</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider">Failed</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider">System Status</TableHead>
+              <TableHead className="text-[#8B949E] font-sans font-semibold py-5 px-6 text-sm uppercase tracking-wider text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -166,12 +165,12 @@ const PluginMatrix: React.FC = () => {
                     className="border-[#30363D] cursor-pointer hover:bg-[#30363D]/40 transition-colors group"
                     onClick={() => setSelectedPlugin(rawPlugin)}
                   >
-                    <TableCell className="py-5 font-medium font-sans text-[#C9D1D9] text-base">{pluginData.name}</TableCell>
-                    <TableCell className="py-5 text-[#C9D1D9] font-sans">{pluginData.totalMigrations}</TableCell>
-                    <TableCell className="py-5 text-[#238636] font-sans font-medium">{pluginData.success}</TableCell>
-                    <TableCell className="py-5 text-[#D33833] font-sans font-medium">{pluginData.fail}</TableCell>
-                    <TableCell className="py-5">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-jetbrains-mono ${
+                    <TableCell className="py-6 px-6 font-medium font-sans text-[#C9D1D9] text-lg">{pluginData.name}</TableCell>
+                    <TableCell className="py-6 px-6 text-[#C9D1D9] font-sans text-base">{pluginData.totalMigrations}</TableCell>
+                    <TableCell className="py-6 px-6 text-[#238636] font-sans font-medium text-base">{pluginData.success}</TableCell>
+                    <TableCell className="py-6 px-6 text-[#D33833] font-sans font-medium text-base">{pluginData.fail}</TableCell>
+                    <TableCell className="py-6 px-6">
+                      <span className={`px-3 py-1.5 rounded-full text-xs font-jetbrains-mono tracking-wide ${
                         pluginData.status === 'Healthy' ? 'bg-[#238636]/10 text-[#238636] border border-[#238636]/30' : 
                         pluginData.status === 'Requires Attention' ? 'bg-[#D33833]/10 text-[#D33833] border border-[#D33833]/30' : 
                         'bg-[#8B949E]/10 text-[#8B949E] border border-[#8B949E]/30'
@@ -179,15 +178,15 @@ const PluginMatrix: React.FC = () => {
                         {pluginData.status}
                       </span>
                     </TableCell>
-                    <TableCell className="py-5 text-right">
-                      <ChevronRight className="w-5 h-5 inline-block text-[#8B949E] group-hover:text-[#C9D1D9] transition-colors" />
+                    <TableCell className="py-6 px-6 text-right">
+                      <ChevronRight className="w-6 h-6 inline-block text-[#8B949E] group-hover:text-[#C9D1D9] transition-colors" />
                     </TableCell>
                   </TableRow>
                 );
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-12 text-[#8B949E] font-sans text-base">
+                <TableCell colSpan={6} className="text-center py-16 text-[#8B949E] font-sans text-lg">
                   No plugins found matching "{searchTerm}"
                 </TableCell>
               </TableRow>
@@ -197,15 +196,15 @@ const PluginMatrix: React.FC = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm font-sans text-[#8B949E]">
-        <div className="flex items-center space-x-4">
-          <span>
+      <div className="flex flex-col xl:flex-row items-center justify-between gap-6 pt-4 font-sans text-[#8B949E]">
+        <div className="flex flex-col sm:flex-row items-center gap-6 text-base">
+          <span className="font-medium text-[#C9D1D9]">
             Showing {itemsPerPage === "All" ? 1 : (currentPage - 1) * itemsPerPage + 1} to {itemsPerPage === "All" ? filteredPlugins.length : Math.min(currentPage * itemsPerPage, filteredPlugins.length)} of {filteredPlugins.length} plugins
           </span>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <span>Rows per page:</span>
             <select 
-              className="bg-[#0D1117] border border-[#30363D] text-[#C9D1D9] rounded px-2 py-1 outline-none focus:border-[#8B949E]"
+              className="bg-[#0D1117] border border-[#30363D] text-[#C9D1D9] rounded-md px-3 py-1.5 outline-none focus:border-[#8B949E] cursor-pointer"
               value={itemsPerPage.toString()}
               onChange={(e) => setItemsPerPage(e.target.value === "All" ? "All" : Number(e.target.value))}
             >
@@ -218,20 +217,20 @@ const PluginMatrix: React.FC = () => {
         </div>
 
         {itemsPerPage !== "All" && totalPages > 1 && (
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-2">
             <button 
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
-              className="p-1.5 rounded-md border border-[#30363D] bg-[#161B22] text-[#C9D1D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#30363D] transition-colors"
+              className="p-2 rounded-md border border-[#30363D] bg-[#161B22] text-[#C9D1D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#30363D] transition-colors"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
             
             {visiblePages.map(page => (
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-8 h-8 rounded-md flex items-center justify-center font-medium transition-colors border ${
+                className={`w-10 h-10 rounded-md flex items-center justify-center font-medium text-base transition-colors border ${
                   currentPage === page 
                     ? "bg-[#238636] border-[#238636] text-white" 
                     : "bg-[#161B22] border-[#30363D] text-[#C9D1D9] hover:bg-[#30363D]"
@@ -244,9 +243,9 @@ const PluginMatrix: React.FC = () => {
             <button 
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
-              className="p-1.5 rounded-md border border-[#30363D] bg-[#161B22] text-[#C9D1D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#30363D] transition-colors"
+              className="p-2 rounded-md border border-[#30363D] bg-[#161B22] text-[#C9D1D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#30363D] transition-colors"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         )}
