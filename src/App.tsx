@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EcosystemHealth from "./components/EcosystemHealth";
 import PluginMatrix from "./components/PluginMatrix";
 import RecipeAnalytics from "./components/RecipeAnalytics";
-import ArchitecturePipeline from "./components/ArchitecturePipeline";
+import SystemDocumentation from "./components/SystemDocumentation";
 
 import {
   Sidebar,
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       case "recipes":
         return <RecipeAnalytics />;
       case "architecture":
-        return <ArchitecturePipeline />;
+        return <SystemDocumentation />;
       default:
         return <EcosystemHealth />;
     }
@@ -94,7 +94,7 @@ const App: React.FC = () => {
                       isActive={activeView === "architecture"}
                       className={activeView === "architecture" ? "bg-[#30363D] text-[#C9D1D9]" : "text-[#8B949E] hover:text-[#C9D1D9] hover:bg-[#30363D]/50"}
                     >
-                      <FileText className="mr-2 h-4 w-4" /> Architecture & Pipeline
+                      <FileText className="mr-2 h-4 w-4" /> System Documentation
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>

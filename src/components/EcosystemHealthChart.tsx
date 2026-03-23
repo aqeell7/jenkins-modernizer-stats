@@ -1,9 +1,7 @@
-// src/components/EcosystemHealthChart.tsx
 import React, { useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
 import rawData from '../data/aggregated_migrations.json';
 
-// Updated interfaces based on your exact Jenkins schema!
 interface Migration {
   migrationStatus: string; // e.g., 'fail', 'success'
   migrationName: string;
@@ -22,9 +20,8 @@ const EcosystemHealthChart: React.FC = () => {
     let fail = 0;
     let other = 0;
 
-    // We now have to loop through the plugins, AND loop through their migrations
+   
     pluginReports.forEach((plugin) => {
-      // Some plugins might not have migrations yet, so we default to an empty array
       const migrations = plugin.migrations || []; 
       
       migrations.forEach((migration) => {
