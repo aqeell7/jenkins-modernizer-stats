@@ -4,7 +4,7 @@ import rawData from "../data/aggregated_migrations.json";
 import TopFailingRecipesWidget from "./TopFailingRecipesWidget";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, ActivitySquare } from "lucide-react";
+import { Activity, ActivitySquare, Github } from "lucide-react";
 
 interface Migration {
   migrationStatus: string;
@@ -205,23 +205,43 @@ const EcosystemHealth: React.FC = () => {
   return (
     <div className="animate-in fade-in duration-500">
       {/* Header */}
-        <div className="mb-6">
-      <div className="flex items-center gap-3 mb-1">
-        <h1 className="text-3xl font-heading font-bold tracking-tight text-[#C9D1D9]">
-          Ecosystem Health
-        </h1>
-        <Badge
-          variant="outline"
-          className="border-[#3FB950]/40 text-[#3FB950] bg-[#3FB950]/10 font-jetbrains-mono text-xs px-2.5 py-1 flex items-center gap-1.5"
-        >
-          <Activity className="h-3 w-3 animate-pulse" />
-          LIVE_SYNC
-        </Badge>
+        <div className="mb-8 flex items-center justify-between">
+  
+      {/* LEFT SIDE */}
+      <div>
+        <div className="flex items-center gap-3 mb-1">
+          <h1 className="text-3xl font-heading font-bold tracking-tight text-[#C9D1D9]">
+            Ecosystem Health
+          </h1>
+
+          <Badge
+            variant="outline"
+            className="border-[#3FB950]/40 text-[#3FB950] bg-[#3FB950]/10 font-jetbrains-mono text-xs px-2.5 py-1 flex items-center gap-1.5"
+          >
+            <Activity className="h-3 w-3 animate-pulse" />
+            LIVE_SYNC
+          </Badge>
+        </div>
+
+        <p className="text-[#8B949E] font-sans text-sm">
+          Real-time modernization telemetry.
+        </p>
       </div>
-      <p className="text-[#8B949E] font-sans text-sm">
-        Real-time modernization telemetry.
-      </p>
-    </div>
+
+      <a
+        href="https://github.com/aqeell7/jenkins-modernizer-stats"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="View Source Code"
+        className="flex items-center gap-3 px-5 py-3 rounded-lg border border-[#30363D] bg-[#161B22] hover:bg-[#21262D] hover:border-[#8B949E] transition-all duration-200 md:mr-3"
+      >
+        <Github className="w-5 h-5 text-[#C9D1D9]" />
+        <span className="text-sm font-medium text-[#C9D1D9] font-sans">
+          Source Code
+        </span>
+       </a>
+        
+      </div>
 
       {/* Telemetry HUD */}
       <Card className="bg-[#161B22] border-[#30363D] text-[#C9D1D9] rounded-md p-4 mb-8">
