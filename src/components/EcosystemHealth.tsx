@@ -205,15 +205,23 @@ const EcosystemHealth: React.FC = () => {
   return (
     <div className="animate-in fade-in duration-500">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight text-[#C9D1D9]">Ecosystem Health</h1>
-          <p className="text-[#8B949E] mt-1 font-sans">Real-time modernization telemetry.</p>
-        </div>
-        <Badge variant="outline" className="border-[#238636]/30 text-[#238636] bg-[#238636]/10 font-jetbrains-mono">
-          <Activity className="mr-2 h-3 w-3 animate-pulse" /> LIVE_SYNC
+        <div className="mb-6">
+      <div className="flex items-center gap-3 mb-1">
+        <h1 className="text-3xl font-heading font-bold tracking-tight text-[#C9D1D9]">
+          Ecosystem Health
+        </h1>
+        <Badge
+          variant="outline"
+          className="border-[#3FB950]/40 text-[#3FB950] bg-[#3FB950]/10 font-jetbrains-mono text-xs px-2.5 py-1 flex items-center gap-1.5"
+        >
+          <Activity className="h-3 w-3 animate-pulse" />
+          LIVE_SYNC
         </Badge>
       </div>
+      <p className="text-[#8B949E] font-sans text-sm">
+        Real-time modernization telemetry.
+      </p>
+    </div>
 
       {/* Telemetry HUD */}
       <Card className="bg-[#161B22] border-[#30363D] text-[#C9D1D9] rounded-md p-4 mb-8">
