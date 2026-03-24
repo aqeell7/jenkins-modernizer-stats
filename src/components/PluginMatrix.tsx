@@ -114,32 +114,37 @@ const PluginMatrix: React.FC = () => {
       </div>
 
       {/* Action Bar: Search & Export */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="w-full max-w-lg relative">
-          <Input 
-            placeholder="Search by plugin name..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pr-12 pl-4 py-6 bg-[#0D1117] border-[#30363D] text-[#C9D1D9] focus-visible:ring-[#8B949E] font-sans text-base rounded-md"
-          />
-          <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#8B949E] pointer-events-none" />
-        </div>
-        
-        <div className="flex space-x-4 w-full md:w-auto">
-          <button 
-            onClick={handleExportCSV}
-            className="flex-1 md:flex-none flex items-center justify-center px-6 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
-          >
-            <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> CSV
-          </button>
-          <button 
-            onClick={handleExportJSON}
-            className="flex-1 md:flex-none flex items-center justify-center px-6 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
-          >
-            <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> JSON
-          </button>
-        </div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      
+      <div className="w-full max-w-lg relative">
+        <Input 
+          placeholder="Search by plugin name..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pr-12 pl-4 py-6 bg-[#0D1117] border-[#30363D] text-[#C9D1D9] focus-visible:ring-[#8B949E] font-sans text-base rounded-md"
+        />
+        <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#8B949E] pointer-events-none" />
       </div>
+      
+      {/* ✅ FIXED BUTTON CONTAINER */}
+      <div className="flex gap-3 w-full md:w-auto md:mr-4">
+        
+        <button 
+          onClick={handleExportCSV}
+          className="flex items-center justify-center px-5 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
+        >
+          <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> CSV
+        </button>
+
+        <button 
+          onClick={handleExportJSON}
+          className="flex items-center justify-center px-5 py-3 bg-[#21262D] hover:bg-[#30363D] border border-[#30363D] text-[#C9D1D9] rounded-md text-base font-sans font-medium transition-colors"
+        >
+          <Download className="w-5 h-5 mr-2 text-[#8B949E]" /> JSON
+        </button>
+
+      </div>
+    </div>
 
       {/* The Data Table */}
       <div className="rounded-lg border border-[#30363D] bg-[#161B22] overflow-hidden shadow-sm">
