@@ -36,7 +36,6 @@ interface PluginDetailPanelProps {
   onClose: () => void;
 }
 
-// ✅ CENTRALIZED COLOR SYSTEM
 const STATUS_COLORS = {
   success: "text-[#238636]",
   fail: "text-[#D33833]",
@@ -195,9 +194,15 @@ const PluginDetailPanel: React.FC<PluginDetailPanelProps> = ({
                       {m.meta.description}
                     </p>
 
-                    <button className="text-[#4493f8] flex items-center text-sm">
+                    {/* Converted dead button to a live, dynamic GitHub link */}
+                    <a 
+                      href={`https://github.com/jenkinsci/${plugin.pluginName}-plugin/pulls`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#4493f8] flex items-center text-sm w-fit hover:text-[#58a6ff] hover:underline transition-colors"
+                    >
                       Review PR <ArrowRight className="w-4 h-4 ml-1" />
-                    </button>
+                    </a>
                   </div>
                 ))}
               </div>
